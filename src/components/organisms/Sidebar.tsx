@@ -9,7 +9,7 @@ export const Sidebar: FC<{ show: boolean; onClose?: () => void }> = ({
 }) => {
   return (
     <div
-      className={`md:hidden fixed top-0 left-0 w-[100vw] h-[100vh] bg-neutral/70 backdrop-blur-lg z-10 transition-transform p-6 flex flex-col gap-10 ${
+      className={`md:hidden fixed top-0 left-0 w-[100vw] h-[100vh] bg-base-300 z-10 transition-transform p-6 flex flex-col gap-10 ${
         !show ? 'translate-x-full' : 'translate-x-0'
       }`}
     >

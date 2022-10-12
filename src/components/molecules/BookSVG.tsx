@@ -1,10 +1,11 @@
 import { useBook } from 'hooks/useBook'
 import { getBase64Image } from 'libs/getBase64Image'
 import { FC, useEffect, useState } from 'react'
+import { Book } from 'typings/context'
 import { Text } from './Text'
 
 export const BookSVG: FC = () => {
-  const { book } = useBook()
+  const { book, setBook } = useBook()
   const [base64Image, setBase64Image] = useState<string>()
   const [image, setImage] = useState<HTMLImageElement>()
   useEffect(() => {
@@ -13,8 +14,17 @@ export const BookSVG: FC = () => {
     img.onload = () => {
       setBase64Image(getBase64Image(img))
       setImage(img)
+      setBook((prevBook) => {
+        const newBook: Book = {
+          ...prevBook,
+          height: img.height,
+          width: img.width,
+        }
+
+        return newBook
+      })
     }
-  }, [book.bookUrl])
+  }, [book.bookUrl, setBook])
 
   if (!base64Image) return null
   return (

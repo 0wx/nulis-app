@@ -26,5 +26,11 @@ export interface Config {
 export interface Book {
   bookUrl: string
   texts: Array<TextData | null>
+
+  // optional, can be passed after rendered
+  height?: number
+  width?: number
+
+  // after render only
   ref?: RefObject<SVGSVGElement>
 }

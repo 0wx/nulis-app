@@ -6,7 +6,7 @@ import { Book, Config } from 'typings/context'
 
 export const HomeLayout: FC<{ children: ReactNode }> = ({ children }) => {
   const [config, setConfig] = useState<Config>({
-    font: '/fonts/3.woff2',
+    font: '/fonts/5.woff2',
     fontSize: 11,
     blur: 0.5,
     color: '#444',

@@ -14,7 +14,7 @@ export const Navbar: FC = () => {
   return (
     <>
       <Sidebar show={showSidebar} onClose={close} />
-      <div className="fixed h-16 w-full top-0 left-0 bg-neutral-focus/30 backdrop-blur py-2 px-6 md:px-12 flex items-center justify-between">
+      <div className="fixed h-16 w-full top-0 z-50 left-0 bg-neutral-focus/30 backdrop-blur py-2 px-6 md:px-12 flex items-center justify-between">
         <div className="flex gap-6 justify-center items-center">
           <div className="md:hidden" onClick={open}>
             <Burger />
