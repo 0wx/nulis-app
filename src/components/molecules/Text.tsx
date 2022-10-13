@@ -25,11 +25,11 @@ export const Text: FC<{ data: TextData | null }> = ({ data }) => {
   return (
     <Draggable
       axis={data.moveable ? 'both' : 'none'}
-      defaultPosition={{ x: 0, y: 0 }}
+      position={data}
       grid={[1, 1]}
       scale={1}
     >
-      <foreignObject x={data.x} y={data.y} style={{ overflow: 'visible' }}>
+      <foreignObject style={{ overflow: 'visible' }}>
         <defs>
           <style>
             {`
@@ -52,6 +52,7 @@ export const Text: FC<{ data: TextData | null }> = ({ data }) => {
             lineHeight: data.lineHeight,
             filter: `blur(${data.blur || config.blur}px)`,
             color: data.color || config.color,
+            border: '1px',
           }}
         >
           {data.text}
