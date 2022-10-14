@@ -10,6 +10,7 @@ export const ConfigContext = createContext<{
     fontSize: 11,
     blur: 0.5,
     color: '#444',
+    lineHeight: 1.7
   },
   setConfig: () => {},
 })
