@@ -21,6 +21,7 @@ export interface Config {
   fontSize: number
   blur: number
   color: string
+  lineHeight: number
 }
 
 export interface Book {

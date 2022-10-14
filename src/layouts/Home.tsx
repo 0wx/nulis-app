@@ -10,6 +10,7 @@ export const HomeLayout: FC<{ children: ReactNode }> = ({ children }) => {
     fontSize: 11,
     blur: 0.5,
     color: '#444',
+    lineHeight: testData[0].texts[0]!.lineHeight,
   })
 
   const ref = createRef<SVGSVGElement>()

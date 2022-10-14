@@ -1,6 +1,6 @@
 import { useBook } from 'hooks/useBook'
 import { useConfig } from 'hooks/useConfig'
-import { FC } from 'react'
+import { FC, useEffect, useState } from 'react'
 import Draggable from 'react-draggable'
 import { Book, TextData } from 'typings/context'
 
@@ -14,6 +14,17 @@ export const TextPreview: FC<{
 }> = ({ data, currentSize, index }) => {
   const { book, setBook } = useBook()
   const { config } = useConfig()
+  const [onEdit, setOnEdit] = useState(false)
+
+  useEffect(() => {
+    setOnEdit(true)
+    const timeout = setTimeout(() => {
+      setOnEdit(false)
+    }, 1000)
+    return () => {
+      clearTimeout(timeout)
+    }
+  }, [data.text, data.length])
 
   const convertFontSize = (x: number) => {
     if (!(book.width && book.height)) return 0
@@ -58,7 +69,11 @@ export const TextPreview: FC<{
       }}
     >
       <div
-        className="absolute whitespace-pre-wrap overflow-hidden cursor-move border border-transparent hover:border-black"
+        className={
+          'absolute whitespace-pre-wrap overflow-hidden border border-transparent hover:border-black ' +
+          (data.moveable ? 'cursor-move ' : '') +
+          (onEdit ? 'border-black' : '')
+        }
         style={{
           fontFamily: 'handwriting',
           whiteSpace: 'pre-wrap',

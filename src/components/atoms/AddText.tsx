@@ -16,7 +16,7 @@ export const AddText: FC = () => {
               y: 0,
               length: 0,
               moveable: true,
-              lineHeight: 1,
+              lineHeight: config.lineHeight,
               text: '',
             },
           ])
