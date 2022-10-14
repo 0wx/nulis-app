@@ -1,4 +1,5 @@
 import { Buffer } from 'buffer'
+import { generateFileName } from './filename'
 
 export const download = (svg: SVGSVGElement) => {
   let svgData = new XMLSerializer().serializeToString(svg)
@@ -14,9 +15,9 @@ export const download = (svg: SVGSVGElement) => {
   )
   img.onload = function () {
     canvas.getContext('2d')?.drawImage(img, 0, 0)
-    const canvasdata = canvas.toDataURL('image/png')
+    const canvasdata = canvas.toDataURL('image/jpg')
     const a = document.createElement('a')
-    a.download = 'meme.png'
+    a.download = generateFileName()
     a.href = canvasdata
     document.body.appendChild(a)
     a.click()
