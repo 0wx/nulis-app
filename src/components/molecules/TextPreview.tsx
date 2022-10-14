@@ -1,6 +1,6 @@
 import { useBook } from 'hooks/useBook'
 import { useConfig } from 'hooks/useConfig'
-import { FC, useEffect, useState } from 'react'
+import { createRef, FC, useEffect, useState } from 'react'
 import Draggable from 'react-draggable'
 import { Book, TextData } from 'typings/context'
 
@@ -14,13 +14,17 @@ export const TextPreview: FC<{
 }> = ({ data, currentSize, index }) => {
   const { book, setBook } = useBook()
   const { config } = useConfig()
+
   const [onEdit, setOnEdit] = useState(false)
+  const [resized, setResized] = useState(0)
+
+  const textRef = createRef<HTMLDivElement>()
 
   useEffect(() => {
     setOnEdit(true)
     const timeout = setTimeout(() => {
       setOnEdit(false)
-    }, 1000)
+    }, 200)
     return () => {
       clearTimeout(timeout)
     }
@@ -36,15 +40,15 @@ export const TextPreview: FC<{
   }
   return (
     <Draggable
-      axis={data.moveable ? 'both' : 'none'}
+      axis={data.moveable && !onEdit ? 'both' : 'none'}
       grid={[1, 1]}
-      defaultPosition={{
+      position={{
         x: (currentSize.width / book.width!) * data.x,
         y: (currentSize.height / book.height!) * data.y,
       }}
       scale={1}
       onStop={(_, d) => {
-        if (!data.moveable) return
+        if (!data.moveable || onEdit) return
         if (book.width && book.height) {
           const width = currentSize.width
           const height = currentSize.height
@@ -68,25 +72,61 @@ export const TextPreview: FC<{
         }
       }}
     >
-      <div
-        className={
-          'absolute whitespace-pre-wrap overflow-hidden border border-transparent hover:border-black ' +
-          (data.moveable ? 'cursor-move ' : '') +
-          (onEdit ? 'border-black' : '')
-        }
-        style={{
-          fontFamily: 'handwriting',
-          whiteSpace: 'pre-wrap',
-          width: data.length
-            ? (currentSize.width / book.width!) * data.length
-            : 'auto',
-          fontSize: convertFontSize(data.fontSize || config.fontSize),
-          lineHeight: data.lineHeight,
-          filter: `blur(${data.blur || config.blur}px)`,
-          color: data.color || config.color,
-        }}
-      >
-        {data?.text}
+      <div className="flex absolute">
+        <div
+          ref={textRef}
+          className={
+            ' whitespace-pre-wrap overflow-hidden border border-transparent hover:border-black ' +
+            (data.moveable ? 'cursor-move ' : '') +
+            (onEdit ? 'border-black' : '')
+          }
+          style={{
+            fontFamily: 'handwriting',
+            whiteSpace: 'pre-wrap',
+            width: data.length
+              ? (currentSize.width / book.width!) * data.length
+              : 'auto',
+            fontSize: convertFontSize(data.fontSize || config.fontSize),
+            lineHeight: data.lineHeight,
+            filter: `blur(${data.blur || config.blur}px)`,
+            color: data.color || config.color,
+          }}
+        >
+          {data?.text}
+        </div>
+        <Draggable
+          axis="none"
+          onDrag={(_, dragData) => {
+            if (!book.width) return
+
+            const { x } = dragData
+            const newLength = (book.width / currentSize.width!) * (x - resized)
+
+            setBook((prevBook) => {
+              const texts = prevBook.texts.map((value, i) => {
+                if (i !== index || !value) return value
+                if (!value.length && !textRef.current) return value
+                const length = value.length || textRef.current!.clientWidth
+                const newValue = {
+                  ...value,
+                  length: length + newLength,
+                }
+                return newValue
+              })
+
+              const newBook = {
+                ...prevBook,
+                texts,
+              }
+
+              return newBook
+            })
+
+            setResized(x)
+          }}
+        >
+          <div className="h-auto w-2 cursor-col-resize"></div>
+        </Draggable>
       </div>
     </Draggable>
   )
