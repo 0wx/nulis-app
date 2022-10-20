@@ -42,7 +42,7 @@ export const BookSVG: FC = () => {
       />
 
       {book.texts.map((data, i) => (
-        <Text key={'text-' + i} data={data} />
+        <Text key={'text-' + i} data={data} index={i} />
       ))}
     </svg>
   )

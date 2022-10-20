@@ -81,7 +81,7 @@ export const TextPreview: FC<{
             (onEdit ? 'border-black' : '')
           }
           style={{
-            fontFamily: 'handwriting',
+            fontFamily: 'handwriting-' + index,
             whiteSpace: 'pre-wrap',
             width: data.length
               ? (currentSize.width / book.width!) * data.length
