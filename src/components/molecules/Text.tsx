@@ -5,7 +5,10 @@ import { FC, useEffect, useState } from 'react'
 import Draggable from 'react-draggable'
 import type { TextData } from 'typings/context'
 
-export const Text: FC<{ data: TextData | null }> = ({ data }) => {
+export const Text: FC<{ data: TextData | null; index: number }> = ({
+  data,
+  index,
+}) => {
   const { config } = useConfig()
   const [base64Font, setBase64Font] = useState<string>()
 
@@ -35,7 +38,7 @@ export const Text: FC<{ data: TextData | null }> = ({ data }) => {
             {`
             
             @font-face {
-              font-family: 'handwriting';
+              font-family: 'handwriting-${index}';
               src: url('data:application/font-woff2;charset=utf-8;base64,${base64Font}') format('woff2');
             }
             
@@ -45,11 +48,11 @@ export const Text: FC<{ data: TextData | null }> = ({ data }) => {
         <div
           className={data.moveable ? 'cursor-move' : undefined}
           style={{
-            fontFamily: 'handwriting',
+            fontFamily: 'handwriting-' + index,
             whiteSpace: 'pre-wrap',
             width: data.length || 1000,
             fontSize: data.fontSize || config.fontSize,
-            lineHeight: data.lineHeight,
+            lineHeight: data.lineHeight || config.lineHeight,
             filter: `blur(${data.blur || config.blur}px)`,
             color: data.color || config.color,
             border: '1px',
