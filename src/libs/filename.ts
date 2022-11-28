@@ -5,7 +5,7 @@ export const generateFileName = () => {
   const day = ('0' + date.getUTCDate()).slice(-2)
 
   const random = Math.floor(Math.random() * 1e5)
-  const filename = `IMG_${year + month + day}_${random}.jpg`
+  const filename = `IMG_${year + month + day}_${random}.png`
 
   return filename
 }

@@ -15,7 +15,7 @@ export const download = (svg: SVGSVGElement) => {
   )
   img.onload = function () {
     canvas.getContext('2d')?.drawImage(img, 0, 0)
-    const canvasdata = canvas.toDataURL('image/jpg')
+    const canvasdata = canvas.toDataURL('image/png')
     const a = document.createElement('a')
     a.download = generateFileName()
     a.href = canvasdata
